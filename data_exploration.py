@@ -50,7 +50,7 @@ import seaborn as sns
 
 
 col_data = []
-train_set = pd.read_csv('train.csv')
+train_set = pd.read_csv('processing/train.csv')
 # uncomment for col2, col13, col15, col17 (nan being dropped automatically, None string creates error)
 #train_set = train_set .replace(np.nan, 'None', regex=True)
 for col in range(train_set.shape[1] - 1):  # iterate over columns but label col
@@ -71,9 +71,15 @@ for col in range(train_set.shape[1] - 1):  # iterate over columns but label col
 # col2_dict = {}
 # for value in col_data[2]:
 #     if value in col2_dict:
-#         col2_dict[value] += 1
+#         if not isinstance(value, float):
+#             col2_dict[value[:-1]] += 1
+#         else:
+#             col2_dict[value] += 1
 #     else:
-#         col2_dict[value] = 1
+#         if not isinstance(value, float):
+#             col2_dict[value[:-1]] = 1
+#         else:
+#             col2_dict[value] = 1
 # histogram = sorted([(key, value) for key, value in col2_dict.items() ], key=lambda z: z[1], reverse=True)
 # x, y = zip(*histogram[:10])
 # plt.bar(x, y)
@@ -193,7 +199,7 @@ for col in range(train_set.shape[1] - 1):  # iterate over columns but label col
 
 
 # # #### col 18 ########
-# labels, counts = np.unique(col_data[18], return_counts=True)
+# labels, counts = np.unique(list(map(lambda x: int(x[1:]) if type(x) == str else -1, col_data[18])), return_counts=True)
 # plt.bar(labels, counts, align='center')
 # plt.gca().set_xticks(labels)
 # plt.title("Col18 Histogram")

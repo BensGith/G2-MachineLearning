@@ -1,0 +1,1 @@
+ FAMD - factor analysis of mixed data.
