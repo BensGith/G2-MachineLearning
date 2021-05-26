@@ -20,13 +20,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d15f7d09-81ad-49ca-a866-362d6a88447b" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/processing/data.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/processing/datawig_impute.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/processing/fit_data.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/processing/new_process.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/processing/process_data.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data_exploration.py" beforeDir="false" afterPath="$PROJECT_DIR$/data_exploration.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/train.csv" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dictionaries/Ben.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/imputers/DistributionImputer.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/outliers/remove_outlier_stddev.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/processing/Untitled.ipynb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/processing/data.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/processing/datawig_impute.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/processing/new_process (1).py" beforeDir="false" afterPath="$PROJECT_DIR$/processing/new_process (1).py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/processing/new_process.py" beforeDir="false" afterPath="$PROJECT_DIR$/processing/new_process.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/processing/train_xl.xlsx" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -52,9 +55,16 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../רפרנס יסכה/Final_project/.ipynb_checkpoints/test-checkpoint.ipynb" />
+    <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Files\TAU\Year 3\למידת מכונה\G2-MachineLearning\imputers" />
+    </key>
   </component>
   <component name="RunManager" selected="Python.new_process (1)">
     <configuration name="data_exploration" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
@@ -195,7 +205,7 @@
       <workItem from="1620497925056" duration="9048000" />
       <workItem from="1620754264742" duration="14896000" />
       <workItem from="1621620348954" duration="34501000" />
-      <workItem from="1621720462656" duration="5113000" />
+      <workItem from="1621720462656" duration="18976000" />
     </task>
     <servers />
   </component>
@@ -299,23 +309,18 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/processing/new_process.py</url>
-          <line>114</line>
+          <line>97</line>
           <option name="timeStamp" value="62" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/processing/new_process.py</url>
-          <line>110</line>
+          <line>93</line>
           <option name="timeStamp" value="86" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/processing/new_process.py</url>
-          <line>97</line>
+          <line>80</line>
           <option name="timeStamp" value="90" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/processing/new_process (1).py</url>
-          <line>100</line>
-          <option name="timeStamp" value="98" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
