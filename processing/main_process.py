@@ -1,13 +1,16 @@
-
 import pandas as pd
 from sklearn.metrics import roc_auc_score
+from sklearn.metrics import auc
 from sklearn.model_selection import KFold
+import matplotlib.pyplot as plt
 
+import matplotlib.patches as mpatches
 import numpy as np
 from sklearn.neural_network import MLPClassifier
 from imputers.DistributionImputer import DistributionImputer
 from outliers.remove_outlier_stddev import remove_outlier_stddev
-#from graphs.ConfusionMatrix import ConfusionMatrix
+from graphs.ConfusionMatrix import ConfusionMatrix
+from sklearn.metrics import roc_curve
 from sklearn.linear_model import LogisticRegression
 from helper.feature_classfier import classify_features
 from sklearn.impute import SimpleImputer
@@ -18,7 +21,6 @@ from sklearn.model_selection import GridSearchCV
 from sklearn.neighbors import KNeighborsClassifier
 
 from sklearn.svm import SVC
-
 
 
 def basic_process(data, train=False):
@@ -47,13 +49,14 @@ def main():
     data_sets = [one_hot_encode(df), one_hot_encode(process_feature_selection(df))]
     labels = data_sets[0]['label']
     imputers = [DistributionImputer(), SimpleImputer(strategy='median')]
-    #imputers = [SimpleImputer(strategy='median')]
+    # imputers = [SimpleImputer(strategy='median')]
     imputed_sets = []
     pca_data = []
     explained_var = [0.9, 0.95, 0.98]
     for data_set in data_sets:
         scaler = MinMaxScaler()
-        data_set = pd.DataFrame(scaler.fit_transform(data_set.copy()), index=df.index, columns=data_set.columns)  # scale data
+        data_set = pd.DataFrame(scaler.fit_transform(data_set.copy()), index=df.index,
+                                columns=data_set.columns)  # scale data
         scalers.append(scaler)  # add scaler to scalers list
         for imputer in imputers:
             feature_names = list(data_set.columns.values)  # save column names
@@ -68,19 +71,18 @@ def main():
     return final_data, labels
 
 
-
-ANN_parametersOptions = {'activation' : ["relu", "logistic"], #
-                     'hidden_layer_sizes' : [(100,), # 1 large hidden layer
-                                             ( 50 , 50 ) , # 2 medium size layers
-                                            (20, 20, 10, 10, 10)], # multiple small sized layers
-                     'batch_size' : [10, 40],
-                     'learning_rate_init' : [0.01, 0.001], #In some of the runs we saw that the network got stuck on a local min, for this reason we enlearge the defualt momentum
-                     'max_iter' : [200, 300, 350]}
-
+ANN_parametersOptions = {'activation': ["relu", "logistic"],  #
+                         'hidden_layer_sizes': [(100,),  # 1 large hidden layer
+                                                (50, 50),  # 2 medium size layers
+                                                (20, 20, 10, 10, 10)],  # multiple small sized layers
+                         'batch_size': [10, 40],
+                         'learning_rate_init': [0.01, 0.001],
+                         # In some of the runs we saw that the network got stuck on a local min, for this reason we enlearge the defualt momentum
+                         'max_iter': [200, 300, 350]}
 
 ann_best = MLPClassifier(  # -----The architecture:------#
     activation="relu",  # What is the activation function between neurons {‘identity’, ‘logistic’, ‘tanh’, ‘relu’}?
-    hidden_layer_sizes=(50,50),  # What is the architecture? what happens if we add more layers?
+    hidden_layer_sizes=(50, 50),  # What is the architecture? what happens if we add more layers?
     alpha=0.01,  # The regularization: loss + alpha*W^2, you know it as lambda.
     # -----The optimizer:------#
     solver="sgd",  # Stochastic Gradient Descent, other optimizers are out of the scope of the course.
@@ -100,16 +102,14 @@ ann_best = MLPClassifier(  # -----The architecture:------#
     random_state=42  # seed
 )
 
+LR_parametersOptions = {'penalty': ['l2'],
+                        'C': [0.001, 0.01, 0.1, 0.5, 1., 10., 100.],  # differnt regoltions valus
+                        'max_iter': [150, 350, 1500]}  # mex itertion for the algoritem
 
-LR_parametersOptions = {'penalty':['l2'],
-                'C': [0.001, 0.01, 0.1, 0.5, 1., 10., 100.], # differnt regoltions valus
-                'max_iter': [150,350,1500]} # mex itertion for the algoritem
-
-
-SVM_parameters = { 'C': [0.001, 0.01, 0.1, 0.5, 1., 10., 100.],
-                   'max_iter': [150,350,1500],
-                   'kernel': ['linear', 'poly', 'rbf'],
-                   'probability': [True]}
+SVM_parameters = {'C': [0.001, 0.01, 0.1, 0.5, 1., 10., 100.],
+                  'max_iter': [150, 350, 1500],
+                  'kernel': ['linear', 'poly', 'rbf'],
+                  'probability': [True]}
 
 lr = LogisticRegression(penalty='l2',
                         C=0.1,
@@ -117,63 +117,111 @@ lr = LogisticRegression(penalty='l2',
 
 knn = KNeighborsClassifier(3)
 
-svm = SVC (C=0.01,kernel='rbf', probability=True)
+svm = SVC(C=0.01, kernel='rbf', probability=True)
 
 data_sets, labels = main()
-
 
 kf = KFold(n_splits=5, random_state=None, shuffle=True)
 pp_option = []
 train_pp_option = []
+
 for i, df in enumerate(data_sets):
     scores = []
     train_scores = []
+    # the X axis (average fpr)
+    avg_fpr_test = np.linspace(0, 1, 100)
+    # the Y axis (average tpr)
+    avg_tpr_test = np.linspace(0, 1, 100)
+
+    avg_fpr_train = np.linspace(0, 1, 100)
+    avg_tpr_train = np.linspace(0, 1, 100)
+
+    tprs_test = np.linspace(0, 0, 100)
+    tprs_train = np.linspace(0, 0, 100)
+    # Initialize the mean TPR
+    mean_tpr = 0.0
+    # Creates an array of 100 numbers between 0 and 1 in equal jumps
+    mean_fpr = np.linspace(0, 1, 100)
+    tprs = []
+    base_fpr = np.linspace(0, 1, 101)
+
     for train_index, validate_index in kf.split(df):
         train = df.iloc[train_index]  # get rows by index list, drop label column
         validate = df.iloc[validate_index]
         train_label = np.array(labels.iloc[train_index])
         validate_label = np.array(labels.iloc[validate_index])
 
-
-
-        knn.fit(train,train_label)
-        predictions = knn.predict_proba(validate)
-        train_predictions = knn.predict_proba(train)
-        predicted_labels = knn.predict(validate)
+        # knn.fit(train, train_label)
+        # predictions = knn.predict_proba(validate)
+        # train_predictions = knn.predict_proba(train)
+        # predicted_labels = knn.predict(validate)
 
         # svm.fit(train,train_label)
         # predictions = svm.predict_proba(validate)
         # train_predictions = svm.predict_proba(train)
         # predicted_labels = svm.predict(validate)
-#
-#
-#         # lr.fit(train, train_label)
-#         # predictions = lr.predict_proba(validate)
-#         # train_predictions = lr.predict_proba(train)
-#         # predicted_labels = lr.predict(validate)
-#
+
+        # lr.fit(train, train_label)
+        # predictions = lr.predict_proba(validate)
+        # train_predictions = lr.predict_proba(train)
+        # predicted_labels = lr.predict(validate)
+
+        ann_best.fit(train, train_label)
+        predictions = ann_best.predict_proba(validate)
+        predicted_labels = ann_best.predict(validate)
+        train_predictions = ann_best.predict_proba(train)
+
+        fpr, tpr, threshold = roc_curve(validate_label, predictions[:, 1])
+        fpr_train, tpr_train, thresholds_train = roc_curve(train_label, train_predictions[:,1])
+
+        # tprs_train += interp1d(avg_fpr_train, fpr, tpr)
+        # tprs_train += interp1d(avg_fpr_train, fpr_train, tpr_train)
+        # # resetting the first tpr to zero again, before the next iteration
+        # tprs_test[0] = 0.0
+        # tprs_train[0] = 0.0
+        # plt.plot(fpr, tpr, 'b', color="gray")
+
+        plt.plot(fpr, tpr, 'b', color="gray")
+        tpr = np.interp(base_fpr, fpr, tpr)
+        tpr[0] = 0.0
+        tprs.append(tpr)
 
 
+        # confusion_mat = ConfusionMatrix("Logistic", validate_label, predicted_labels)
 
-        # ann_best.fit(train, train_label)
-        # check for OF
-        # predictions = ann_best.predict_proba(validate)
-        # predicted_labels = ann_best.predict(validate)
-        # train_predictions = ann_best.predict_proba(train)
-#         #confusion_mat = ConfusionMatrix("Logistic", validate_label, predicted_labels)
+        # confusion_mat = ConfusionMatrix("KNN", validate_label, predicted_labels)
+        # confusion_mat.plot()
 
-
-        #confusion_mat = ConfusionMatrix("KNN", validate_label, predicted_labels)
-        #confusion_mat.plot()
         scores.append(roc_auc_score(validate_label, predictions[:, 1]))
         train_scores.append(roc_auc_score(train_label, train_predictions[:, 1]))
-    pp_option.append((i, sum(scores)/len(scores)))
-    train_pp_option.append((i, sum(train_scores)/len(train_scores)))
+    tprs = np.array(tprs)
+    mean_tprs = tprs.mean(axis=0)
+
+
+    avg_tpr_test[:-1] = tprs_test[:-1] / 5
+    avg_auc_test = auc(avg_fpr_test, avg_tpr_test)
+    avg_tpr_train[:-1] = tprs_train[:-1] / 5
+    avg_auc_train = auc(base_fpr, mean_tprs)
+    plt.title('Receiver Operating Characteristic')
+    blue_patch = mpatches.Patch(color='blue', label='Mean AUC')
+    gray_patch = mpatches.Patch(color='gray', label='K-folds')
+    red_patch = mpatches.Patch(color='red', label='Random Classifier', ls='--')
+    plt.legend(handles=[blue_patch, gray_patch, red_patch], loc='lower right')
+    plt.plot([0, 1], [0, 1], 'r--')
+    plt.xlim([0, 1])
+    plt.ylim([0, 1])
+    plt.ylabel('True Positive Rate')
+    plt.xlabel('False Positive Rate')
+    plt.plot(base_fpr, mean_tprs, 'b',label='Mean (AUC train = %0.3f, AUC validation = %0.3f)' % (avg_auc_train, 0))
+    #plt.plot(avg_fpr_test, avg_tpr_test, 'b' 'b', label='f Mean AUC = %0.2f' % avg_auc_test)
+    plt.show()
+    pp_option.append((i, sum(scores) / len(scores)))
+    train_pp_option.append((i, sum(train_scores) / len(train_scores)))
 print(pp_option)
 print(train_pp_option)
 #         #ploy roc curve
 #
-max_pp_index = sorted(pp_option, key = lambda x: x[1], reverse=True)[0][0]
+max_pp_index = sorted(pp_option, key=lambda x: x[1], reverse=True)[0][0]
 
 # gs = GridSearchCV(ann_best, ANN_parametersOptions, cv=3, scoring='roc_auc')
 # gs.fit(data_sets[max_pp_index].copy(), labels.copy())
@@ -186,4 +234,3 @@ max_pp_index = sorted(pp_option, key = lambda x: x[1], reverse=True)[0][0]
 # svm_gs.fit(data_sets[2].copy(), labels.copy())
 # print(svm_gs.best_params_)
 print("x")
-
