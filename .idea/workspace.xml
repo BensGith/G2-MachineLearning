@@ -21,7 +21,6 @@
   <component name="ChangeListManager">
     <list default="true" id="d15f7d09-81ad-49ca-a866-362d6a88447b" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/processing/feature_selection.py" beforeDir="false" afterPath="$PROJECT_DIR$/processing/feature_selection.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/processing/main_process.py" beforeDir="false" afterPath="$PROJECT_DIR$/processing/main_process.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -200,7 +199,7 @@
       <workItem from="1620754264742" duration="14896000" />
       <workItem from="1621620348954" duration="34501000" />
       <workItem from="1621720462656" duration="45748000" />
-      <workItem from="1622399801132" duration="12407000" />
+      <workItem from="1622399801132" duration="12995000" />
     </task>
     <servers />
   </component>
@@ -242,22 +241,22 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="549" y="167" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1621840368282" />
-    <state width="1493" height="64" key="GridCell.Tab.0.bottom" timestamp="1622414970221">
+    <state width="1493" height="64" key="GridCell.Tab.0.bottom" timestamp="1622415607915">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="64" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1622414970221" />
-    <state width="1493" height="64" key="GridCell.Tab.0.center" timestamp="1622414970221">
+    <state width="1493" height="64" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1622415607915" />
+    <state width="1493" height="64" key="GridCell.Tab.0.center" timestamp="1622415607915">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="64" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1622414970221" />
-    <state width="1493" height="64" key="GridCell.Tab.0.left" timestamp="1622414970221">
+    <state width="1493" height="64" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1622415607915" />
+    <state width="1493" height="64" key="GridCell.Tab.0.left" timestamp="1622415607915">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="64" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1622414970221" />
-    <state width="1493" height="64" key="GridCell.Tab.0.right" timestamp="1622414970221">
+    <state width="1493" height="64" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1622415607915" />
+    <state width="1493" height="64" key="GridCell.Tab.0.right" timestamp="1622415607915">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="64" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1622414970221" />
+    <state width="1493" height="64" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1622415607915" />
     <state width="1493" height="205" key="GridCell.Tab.1.bottom" timestamp="1622406327163">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -317,7 +316,7 @@
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/G2_MachineLearning$data_exploration.coverage" NAME="data_exploration Coverage Results" MODIFIED="1621025074310" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/G2_MachineLearning$new_process__1_.coverage" NAME="new_process (1) Coverage Results" MODIFIED="1622403874661" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/processing" />
-    <SUITE FILE_PATH="coverage/G2_MachineLearning$main_process.coverage" NAME="main_process Coverage Results" MODIFIED="1622414970213" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/processing" />
+    <SUITE FILE_PATH="coverage/G2_MachineLearning$main_process.coverage" NAME="main_process Coverage Results" MODIFIED="1622415607904" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/processing" />
     <SUITE FILE_PATH="coverage/G2_MachineLearning$new_process.coverage" NAME="new_process Coverage Results" MODIFIED="1621703550626" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/processing" />
     <SUITE FILE_PATH="coverage/G2_MachineLearning$fit_data.coverage" NAME="fit_data Coverage Results" MODIFIED="1621672036415" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/processing" />
     <SUITE FILE_PATH="coverage/G2_MachineLearning$process_data.coverage" NAME="process_data Coverage Results" MODIFIED="1621673354003" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/processing" />

@@ -174,13 +174,6 @@ for i, df in enumerate(data_sets):
         fpr, tpr, threshold = roc_curve(validate_label, predictions[:, 1])
         fpr_train, tpr_train, thresholds_train = roc_curve(train_label, train_predictions[:,1])
 
-        # tprs_train += interp1d(avg_fpr_train, fpr, tpr)
-        # tprs_train += interp1d(avg_fpr_train, fpr_train, tpr_train)
-        # # resetting the first tpr to zero again, before the next iteration
-        # tprs_test[0] = 0.0
-        # tprs_train[0] = 0.0
-        # plt.plot(fpr, tpr, 'b', color="gray")
-
         plt.plot(fpr, tpr, 'b', color="gray")
         tpr = np.interp(base_fpr, fpr, tpr)
         tpr[0] = 0.0
@@ -203,7 +196,7 @@ for i, df in enumerate(data_sets):
     avg_tpr_train[:-1] = tprs_train[:-1] / 5
     avg_auc_train = auc(base_fpr, mean_tprs)
     plt.title('Receiver Operating Characteristic')
-    blue_patch = mpatches.Patch(color='blue', label='Mean AUC')
+    blue_patch = mpatches.Patch(color='blue', label='Mean AUC test = %0.2f' % avg_auc_test)
     gray_patch = mpatches.Patch(color='gray', label='K-folds')
     red_patch = mpatches.Patch(color='red', label='Random Classifier', ls='--')
     plt.legend(handles=[blue_patch, gray_patch, red_patch], loc='lower right')
@@ -212,8 +205,7 @@ for i, df in enumerate(data_sets):
     plt.ylim([0, 1])
     plt.ylabel('True Positive Rate')
     plt.xlabel('False Positive Rate')
-    plt.plot(base_fpr, mean_tprs, 'b',label='Mean (AUC train = %0.3f, AUC validation = %0.3f)' % (avg_auc_train, 0))
-    #plt.plot(avg_fpr_test, avg_tpr_test, 'b' 'b', label='f Mean AUC = %0.2f' % avg_auc_test)
+    plt.plot(base_fpr, mean_tprs, 'b', label='Mean (AUC train = %0.2f, AUC validation = %0.2f)' % (avg_auc_train, 0))
     plt.show()
     pp_option.append((i, sum(scores) / len(scores)))
     train_pp_option.append((i, sum(train_scores) / len(train_scores)))
