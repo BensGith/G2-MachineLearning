@@ -6,7 +6,6 @@ import matplotlib.pyplot as plt
 
 import matplotlib.patches as mpatches
 import numpy as np
-from sklearn.neural_network import MLPClassifier
 from imputers.DistributionImputer import DistributionImputer
 from outliers.remove_outlier_stddev import remove_outlier_stddev
 from graphs.ConfusionMatrix import ConfusionMatrix
@@ -19,9 +18,10 @@ from sklearn.preprocessing import MinMaxScaler
 from sklearn.decomposition import PCA
 from sklearn.model_selection import GridSearchCV
 from sklearn.neighbors import KNeighborsClassifier
+from classifiers.ANN import ann
 
-from sklearn.svm import SVC
-
+#from sklearn.svm import SVC
+from classifiers.SVM import svm
 
 def basic_process(data, train=False):
     data.drop(columns=['19'], axis=1, inplace=True)
@@ -80,27 +80,6 @@ ANN_parametersOptions = {'activation': ["relu", "logistic"],  #
                          # In some of the runs we saw that the network got stuck on a local min, for this reason we enlearge the defualt momentum
                          'max_iter': [200, 300, 350]}
 
-ann_best = MLPClassifier(  # -----The architecture:------#
-    activation="relu",  # What is the activation function between neurons {‘identity’, ‘logistic’, ‘tanh’, ‘relu’}?
-    hidden_layer_sizes=(50, 50),  # What is the architecture? what happens if we add more layers?
-    alpha=0.01,  # The regularization: loss + alpha*W^2, you know it as lambda.
-    # -----The optimizer:------#
-    solver="sgd",  # Stochastic Gradient Descent, other optimizers are out of the scope of the course.
-    learning_rate_init=0.01,  # What is the initial learning rate? in some optimizers the learning rate changes.
-
-    learning_rate="invscaling",  # How does the learning rate update itself? {‘constant’, ‘invscaling’, ‘adaptive’}
-    power_t=0.5,  # When we choose learning rate to be invscaling, it means that we multiply this number each epoch.
-
-    early_stopping=False,
-    # If True, then we set an internal validation data and stop training when there is no imporovement.
-    tol=1e-4,  # A broad concept of converges, when we can say the algorithm converged?
-
-    batch_size=10,  # The number of samples each batch.
-    max_iter=200,  # The total number of epochs.
-    warm_start=False,  # if we fit at the second time, do we start from the last fit?
-
-    random_state=42  # seed
-)
 
 LR_parametersOptions = {'penalty': ['l2'],
                         'C': [0.001, 0.01, 0.1, 0.5, 1., 10., 100.],  # differnt regoltions valus
@@ -117,7 +96,7 @@ lr = LogisticRegression(penalty='l2',
 
 knn = KNeighborsClassifier(3)
 
-svm = SVC(C=0.01, kernel='rbf', probability=True)
+# svm = SVC(C=0.01, kernel='rbf', probability=True)
 
 data_sets, labels = main()
 
@@ -156,25 +135,25 @@ for i, df in enumerate(data_sets):
         # train_predictions = knn.predict_proba(train)
         # predicted_labels = knn.predict(validate)
 
-        # svm.fit(train,train_label)
-        # predictions = svm.predict_proba(validate)
-        # train_predictions = svm.predict_proba(train)
-        # predicted_labels = svm.predict(validate)
+        svm.fit(train, train_label)
+        predictions = svm.predict_proba(validate)
+        train_predictions = svm.predict_proba(train)
+        predicted_labels = svm.predict(validate)
 
         # lr.fit(train, train_label)
         # predictions = lr.predict_proba(validate)
         # train_predictions = lr.predict_proba(train)
         # predicted_labels = lr.predict(validate)
 
-        ann_best.fit(train, train_label)
-        predictions = ann_best.predict_proba(validate)
-        predicted_labels = ann_best.predict(validate)
-        train_predictions = ann_best.predict_proba(train)
+        # ann.fit(train, train_label)
+        # predictions = ann.predict_proba(validate)
+        # predicted_labels = ann.predict(validate)
+        # train_predictions = ann.predict_proba(train)
 
         fpr, tpr, threshold = roc_curve(validate_label, predictions[:, 1])
         fpr_train, tpr_train, thresholds_train = roc_curve(train_label, train_predictions[:,1])
 
-        plt.plot(fpr, tpr, 'b', color="gray")
+        plt.plot(fpr, tpr, color="gray")
         tpr = np.interp(base_fpr, fpr, tpr)
         tpr[0] = 0.0
         tprs.append(tpr)
@@ -196,7 +175,7 @@ for i, df in enumerate(data_sets):
     avg_tpr_train[:-1] = tprs_train[:-1] / 5
     avg_auc_train = auc(base_fpr, mean_tprs)
     plt.title('Receiver Operating Characteristic')
-    blue_patch = mpatches.Patch(color='blue', label='Mean AUC test = %0.2f' % avg_auc_test)
+    blue_patch = mpatches.Patch(color='blue', label='Mean AUC test = %0.2f' % avg_auc_train)
     gray_patch = mpatches.Patch(color='gray', label='K-folds')
     red_patch = mpatches.Patch(color='red', label='Random Classifier', ls='--')
     plt.legend(handles=[blue_patch, gray_patch, red_patch], loc='lower right')
@@ -205,14 +184,13 @@ for i, df in enumerate(data_sets):
     plt.ylim([0, 1])
     plt.ylabel('True Positive Rate')
     plt.xlabel('False Positive Rate')
-    plt.plot(base_fpr, mean_tprs, 'b', label='Mean (AUC train = %0.2f, AUC validation = %0.2f)' % (avg_auc_train, 0))
+    plt.plot(base_fpr, mean_tprs, color='blue')
     plt.show()
     pp_option.append((i, sum(scores) / len(scores)))
     train_pp_option.append((i, sum(train_scores) / len(train_scores)))
 print(pp_option)
 print(train_pp_option)
-#         #ploy roc curve
-#
+
 max_pp_index = sorted(pp_option, key=lambda x: x[1], reverse=True)[0][0]
 
 # gs = GridSearchCV(ann_best, ANN_parametersOptions, cv=3, scoring='roc_auc')
