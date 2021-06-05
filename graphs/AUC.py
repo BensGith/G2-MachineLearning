@@ -5,7 +5,7 @@ import matplotlib.patches as mpatches
 class AUC:
     def __init__(self):
 
-        self.fig, self.axs = plt.subplots(3, 3)
+        self.fig, self.axs = plt.subplots(2, 2)
         self.fig.suptitle('K Folds')
         self.j = 0
     def plot_roc_curve(self, fpr, tpr, auc):
