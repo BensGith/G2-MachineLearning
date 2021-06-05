@@ -3,7 +3,8 @@ from sklearn.metrics import roc_auc_score
 from sklearn.metrics import auc
 from sklearn.model_selection import KFold
 import matplotlib.pyplot as plt
-
+from graphs.AUC import AUC
+#from graphs.AUC import plot_roc_curve
 import matplotlib.patches as mpatches
 import numpy as np
 from imputers.DistributionImputer import DistributionImputer
@@ -18,19 +19,9 @@ from sklearn.preprocessing import MinMaxScaler
 from sklearn.decomposition import PCA
 from sklearn.model_selection import GridSearchCV
 from sklearn.neighbors import KNeighborsClassifier
+from processing.basic_process import basic_process
 from classifiers.ANN import ann
-
-#from sklearn.svm import SVC
 from classifiers.SVM import svm
-
-def basic_process(data, train=False):
-    data.drop(columns=['19'], axis=1, inplace=True)
-    feature_classes = classify_features(data)
-    numeric_features = feature_classes.get("numerical")
-    if train:
-        rows = remove_outlier_stddev(data[numeric_features])
-        data.drop(index=rows, axis=0, inplace=True)
-    return data
 
 
 def one_hot_encode(data):
@@ -104,7 +95,7 @@ kf = KFold(n_splits=5, random_state=None, shuffle=True)
 pp_option = []
 train_pp_option = []
 
-for i, df in enumerate(data_sets):
+for i, df in enumerate([data_sets[2]]):
     scores = []
     train_scores = []
     # the X axis (average fpr)
@@ -124,6 +115,8 @@ for i, df in enumerate(data_sets):
     tprs = []
     base_fpr = np.linspace(0, 1, 101)
 
+    auc_graph = AUC
+
     for train_index, validate_index in kf.split(df):
         train = df.iloc[train_index]  # get rows by index list, drop label column
         validate = df.iloc[validate_index]
@@ -135,20 +128,20 @@ for i, df in enumerate(data_sets):
         # train_predictions = knn.predict_proba(train)
         # predicted_labels = knn.predict(validate)
 
-        svm.fit(train, train_label)
-        predictions = svm.predict_proba(validate)
-        train_predictions = svm.predict_proba(train)
-        predicted_labels = svm.predict(validate)
+        # svm.fit(train, train_label)
+        # predictions = svm.predict_proba(validate)
+        # train_predictions = svm.predict_proba(train)
+        # predicted_labels = svm.predict(validate)
 
         # lr.fit(train, train_label)
         # predictions = lr.predict_proba(validate)
         # train_predictions = lr.predict_proba(train)
         # predicted_labels = lr.predict(validate)
 
-        # ann.fit(train, train_label)
-        # predictions = ann.predict_proba(validate)
-        # predicted_labels = ann.predict(validate)
-        # train_predictions = ann.predict_proba(train)
+        ann.fit(train, train_label)
+        predictions = ann.predict_proba(validate)
+        predicted_labels = ann.predict(validate)
+        train_predictions = ann.predict_proba(train)
 
         fpr, tpr, threshold = roc_curve(validate_label, predictions[:, 1])
         fpr_train, tpr_train, thresholds_train = roc_curve(train_label, train_predictions[:,1])
@@ -174,19 +167,11 @@ for i, df in enumerate(data_sets):
     avg_auc_test = auc(avg_fpr_test, avg_tpr_test)
     avg_tpr_train[:-1] = tprs_train[:-1] / 5
     avg_auc_train = auc(base_fpr, mean_tprs)
-    plt.title('Receiver Operating Characteristic')
-    blue_patch = mpatches.Patch(color='blue', label='Mean AUC test = %0.2f' % avg_auc_train)
-    gray_patch = mpatches.Patch(color='gray', label='K-folds')
-    red_patch = mpatches.Patch(color='red', label='Random Classifier', ls='--')
-    plt.legend(handles=[blue_patch, gray_patch, red_patch], loc='lower right')
-    plt.plot([0, 1], [0, 1], 'r--')
-    plt.xlim([0, 1])
-    plt.ylim([0, 1])
-    plt.ylabel('True Positive Rate')
-    plt.xlabel('False Positive Rate')
-    plt.plot(base_fpr, mean_tprs, color='blue')
-    plt.show()
+
+    # plot_roc_curve(base_fpr, mean_tprs, avg_auc_train)
+
     pp_option.append((i, sum(scores) / len(scores)))
+
     train_pp_option.append((i, sum(train_scores) / len(train_scores)))
 print(pp_option)
 print(train_pp_option)

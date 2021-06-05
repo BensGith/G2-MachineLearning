@@ -20,8 +20,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d15f7d09-81ad-49ca-a866-362d6a88447b" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/G2-MachineLearning.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/G2-MachineLearning.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/processing/main_process.py" beforeDir="false" afterPath="$PROJECT_DIR$/processing/main_process.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/classifiers/ANN.py" beforeDir="false" afterPath="$PROJECT_DIR$/classifiers/ANN.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/classifiers/LogisticRegression.py" beforeDir="false" afterPath="$PROJECT_DIR$/classifiers/LogisticRegression.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/classifiers/SVM.py" beforeDir="false" afterPath="$PROJECT_DIR$/classifiers/SVM.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/graphs/AUC.py" beforeDir="false" afterPath="$PROJECT_DIR$/graphs/AUC.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/processing/basic_process.py" beforeDir="false" afterPath="$PROJECT_DIR$/processing/basic_process.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/processing/feature_selection.py" beforeDir="false" afterPath="$PROJECT_DIR$/processing/feature_selection.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/processing/test_process.py" beforeDir="false" afterPath="$PROJECT_DIR$/processing/test_process.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/processing/train_process.py" beforeDir="false" afterPath="$PROJECT_DIR$/processing/train_process.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,7 +58,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../רפרנס יסכה/Final_project/.ipynb_checkpoints/test-checkpoint.ipynb" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
@@ -59,8 +68,8 @@
       <recent name="C:\Files\TAU\Year 3\למידת מכונה\G2-MachineLearning\imputers" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.main_process">
-    <configuration name="fit_data" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="Python.train_process (1)">
+    <configuration name="ANN" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="G2-MachineLearning" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -68,34 +77,11 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/processing" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/classifiers" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/processing/fit_data.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="main_process" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="G2-MachineLearning" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/processing" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/processing/main_process.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/classifiers/ANN.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -148,7 +134,28 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="process_data" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="train_process (1)" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="G2-MachineLearning" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/processing" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/processing/train_process.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="train_process" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="G2-MachineLearning" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -161,7 +168,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/processing/process_data.py" />
+      <option name="SCRIPT_NAME" value="C:\TAU\G2-MachineLearning\processing\train_process.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -172,14 +179,15 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.main_process" />
+        <item itemvalue="Python.train_process (1)" />
+        <item itemvalue="Python.train_process" />
+        <item itemvalue="Python.ANN" />
         <item itemvalue="Python.new_process (1)" />
         <item itemvalue="Python.new_process" />
-        <item itemvalue="Python.process_data" />
-        <item itemvalue="Python.fit_data" />
       </list>
     </recent_temporary>
   </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="project-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -241,22 +249,22 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="549" y="167" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1621840368282" />
-    <state width="1493" height="64" key="GridCell.Tab.0.bottom" timestamp="1622415607915">
+    <state width="1515" height="91" key="GridCell.Tab.0.bottom" timestamp="1622924275599">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="64" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1622415607915" />
-    <state width="1493" height="64" key="GridCell.Tab.0.center" timestamp="1622415607915">
+    <state width="1515" height="91" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1622924275599" />
+    <state width="1515" height="91" key="GridCell.Tab.0.center" timestamp="1622924275599">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="64" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1622415607915" />
-    <state width="1493" height="64" key="GridCell.Tab.0.left" timestamp="1622415607915">
+    <state width="1515" height="91" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1622924275599" />
+    <state width="1515" height="91" key="GridCell.Tab.0.left" timestamp="1622924275599">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="64" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1622415607915" />
-    <state width="1493" height="64" key="GridCell.Tab.0.right" timestamp="1622415607915">
+    <state width="1515" height="91" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1622924275599" />
+    <state width="1515" height="91" key="GridCell.Tab.0.right" timestamp="1622924275599">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="64" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1622415607915" />
+    <state width="1515" height="91" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1622924275599" />
     <state width="1493" height="205" key="GridCell.Tab.1.bottom" timestamp="1622406327163">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -300,8 +308,8 @@
           <option name="timeStamp" value="22" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/processing/main_process.py</url>
-          <line>173</line>
+          <url>file://$PROJECT_DIR$/processing/train_process.py</url>
+          <line>152</line>
           <option name="timeStamp" value="141" />
         </line-breakpoint>
       </breakpoints>
@@ -312,13 +320,5 @@
         <watch expression="train_index" />
       </configuration>
     </watches-manager>
-  </component>
-  <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/G2_MachineLearning$data_exploration.coverage" NAME="data_exploration Coverage Results" MODIFIED="1621025074310" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/G2_MachineLearning$new_process__1_.coverage" NAME="new_process (1) Coverage Results" MODIFIED="1622403874661" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/processing" />
-    <SUITE FILE_PATH="coverage/G2_MachineLearning$main_process.coverage" NAME="main_process Coverage Results" MODIFIED="1622415607904" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/processing" />
-    <SUITE FILE_PATH="coverage/G2_MachineLearning$new_process.coverage" NAME="new_process Coverage Results" MODIFIED="1621703550626" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/processing" />
-    <SUITE FILE_PATH="coverage/G2_MachineLearning$fit_data.coverage" NAME="fit_data Coverage Results" MODIFIED="1621672036415" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/processing" />
-    <SUITE FILE_PATH="coverage/G2_MachineLearning$process_data.coverage" NAME="process_data Coverage Results" MODIFIED="1621673354003" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/processing" />
   </component>
 </project>
