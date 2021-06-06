@@ -61,7 +61,7 @@ class DistributionImputer:
                 for j, cell in enumerate(data[feature]):
                     if pd.isnull(cell):
                         # call random function from dictionary, pass parameters from fit
-                        random_impute = self.function_map[self.distributions[i][0]](*self.distributions[i][1])
+                        random_impute = (self.function_map[self.distributions[i][0]](*self.distributions[i][1]))
                         if random_impute > self.max_values[i]:
                             random_impute = self.max_values[i]
                         elif random_impute < self.min_values[i]:

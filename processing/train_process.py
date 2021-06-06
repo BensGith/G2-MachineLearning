@@ -45,14 +45,14 @@ def main():
     pca_data = []
     explained_var = [0.9, 0.95, 0.98]
     for data_set in data_sets:
-        scaler = MinMaxScaler()
-        data_set = pd.DataFrame(scaler.fit_transform(data_set.copy()), index=df.index,
-                                columns=data_set.columns)  # scale data
-        scalers.append(scaler)  # add scaler to scalers list
         for imputer in imputers:
             feature_names = list(data_set.columns.values)  # save column names
             data_set = pd.DataFrame(imputer.fit_transform(data_set))  # impute data
             data_set = data_set.set_axis(feature_names, axis=1, inplace=False)  # rename columns after imputing
+            scaler = MinMaxScaler()
+            data_set = pd.DataFrame(scaler.fit_transform(data_set), index=df.index,
+                                    columns=data_set.columns)  # scale data
+            scalers.append(scaler)  # add scaler to scalers list
             imputed_sets.append(imputer)
             for var in explained_var:
                 pca = PCA(var, svd_solver='full')
