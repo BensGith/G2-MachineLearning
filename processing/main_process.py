@@ -68,6 +68,7 @@ def main():
                 data = pca.fit_transform(data_set.drop(columns=['label'], axis=1))
                 pca_data.append(pca)
                 final_data.append(pd.DataFrame(data))
+
     return final_data, labels
 
 
@@ -75,8 +76,9 @@ ANN_parametersOptions = {'activation': ["relu", "logistic"],  #
                          'hidden_layer_sizes': [(100,),  # 1 large hidden layer
                                                 (50, 50),  # 2 medium size layers
                                                 (20, 20, 10, 10, 10)],  # multiple small sized layers
-                         'batch_size': [10, 40],
+                         'batch_size': [10, 50],
                          'learning_rate_init': [0.01, 0.001],
+                         'alpha':[0.01,0.1,1],
                          # In some of the runs we saw that the network got stuck on a local min, for this reason we enlearge the defualt momentum
                          'max_iter': [200, 300, 350]}
 
@@ -104,11 +106,14 @@ ann_best = MLPClassifier(  # -----The architecture:------#
 
 LR_parametersOptions = {'penalty': ['l2'],
                         'C': [0.001, 0.01, 0.1, 0.5, 1., 10., 100.],  # differnt regoltions valus
-                        'max_iter': [150, 350, 1500]}  # mex itertion for the algoritem
+                        'max_iter': [150, 350, 1500]}  # max itertion for the algoritem
 
 SVM_parameters = {'C': [0.001, 0.01, 0.1, 0.5, 1., 10., 100.],
                   'max_iter': [150, 350, 1500],
-                  'kernel': ['linear', 'poly', 'rbf'],
+                  'degree':[1, 3, 5, 7],
+                  'gamma': [1, 0.75, 0.5, 0.25, 0.1, 0.01, 0.001],
+
+                  'kernel': ['poly', 'rbf', 'sigmoid'],
                   'probability': [True]}
 
 lr = LogisticRegression(penalty='l2',
@@ -120,12 +125,12 @@ knn = KNeighborsClassifier(3)
 svm = SVC(C=0.01, kernel='rbf', probability=True)
 
 data_sets, labels = main()
-
+#print(data_sets[2].isnull().values.any())
 kf = KFold(n_splits=5, random_state=None, shuffle=True)
 pp_option = []
 train_pp_option = []
 
-for i, df in enumerate(data_sets):
+for i, df in enumerate([data_sets[2]]):
     scores = []
     train_scores = []
     # the X axis (average fpr)
@@ -190,7 +195,6 @@ for i, df in enumerate(data_sets):
     tprs = np.array(tprs)
     mean_tprs = tprs.mean(axis=0)
 
-
     avg_tpr_test[:-1] = tprs_test[:-1] / 5
     avg_auc_test = auc(avg_fpr_test, avg_tpr_test)
     avg_tpr_train[:-1] = tprs_train[:-1] / 5
@@ -211,8 +215,7 @@ for i, df in enumerate(data_sets):
     train_pp_option.append((i, sum(train_scores) / len(train_scores)))
 print(pp_option)
 print(train_pp_option)
-#         #ploy roc curve
-#
+
 max_pp_index = sorted(pp_option, key=lambda x: x[1], reverse=True)[0][0]
 
 # gs = GridSearchCV(ann_best, ANN_parametersOptions, cv=3, scoring='roc_auc')
