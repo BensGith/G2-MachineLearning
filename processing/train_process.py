@@ -5,6 +5,7 @@ from sklearn.model_selection import KFold
 import matplotlib.pyplot as plt
 from graphs.AUC import AUC
 #from graphs.AUC import plot_roc_curve
+
 import matplotlib.patches as mpatches
 import numpy as np
 from imputers.DistributionImputer import DistributionImputer
@@ -40,7 +41,6 @@ def main():
     data_sets = [one_hot_encode(df), one_hot_encode(process_feature_selection(df))]
     labels = data_sets[0]['label']
     imputers = [DistributionImputer(), SimpleImputer(strategy='median')]
-    # imputers = [SimpleImputer(strategy='median')]
     imputed_sets = []
     pca_data = []
     explained_var = [0.9, 0.95, 0.98]
@@ -86,7 +86,7 @@ SVM_parameters = {'C': [0.001, 0.01, 0.1, 0.5, 1., 10., 100.],
                   'kernel': ['poly', 'rbf', 'sigmoid'],
                   'probability': [True]}
 
-lr = LogisticRegression(penalty='l2',
+logistic_regression = LogisticRegression(penalty='l2',
                         C=0.1,
                         max_iter=150)
 
@@ -120,8 +120,6 @@ for i, df in enumerate([data_sets[2]]):
     tprs = []
     base_fpr = np.linspace(0, 1, 101)
 
-    auc_graph = AUC
-
     for train_index, validate_index in kf.split(df):
         train = df.iloc[train_index]  # get rows by index list, drop label column
         validate = df.iloc[validate_index]
@@ -138,10 +136,10 @@ for i, df in enumerate([data_sets[2]]):
         # train_predictions = svm.predict_proba(train)
         # predicted_labels = svm.predict(validate)
 
-        # lr.fit(train, train_label)
-        # predictions = lr.predict_proba(validate)
-        # train_predictions = lr.predict_proba(train)
-        # predicted_labels = lr.predict(validate)
+        # logistic_regression.fit(train, train_label)
+        # predictions = logistic_regression.predict_proba(validate)
+        # train_predictions = logistic_regression.predict_proba(train)
+        # predicted_labels = logistic_regression.predict(validate)
 
         ann.fit(train, train_label)
         predictions = ann.predict_proba(validate)
@@ -151,11 +149,10 @@ for i, df in enumerate([data_sets[2]]):
         fpr, tpr, threshold = roc_curve(validate_label, predictions[:, 1])
         fpr_train, tpr_train, thresholds_train = roc_curve(train_label, train_predictions[:,1])
 
-        plt.plot(fpr, tpr, color="gray")
+        #plt.plot(fpr, tpr, color="gray")
         tpr = np.interp(base_fpr, fpr, tpr)
         tpr[0] = 0.0
         tprs.append(tpr)
-
 
         # confusion_mat = ConfusionMatrix("Logistic", validate_label, predicted_labels)
 
@@ -167,12 +164,7 @@ for i, df in enumerate([data_sets[2]]):
     tprs = np.array(tprs)
     mean_tprs = tprs.mean(axis=0)
 
-    avg_tpr_test[:-1] = tprs_test[:-1] / 5
-    avg_auc_test = auc(avg_fpr_test, avg_tpr_test)
-    avg_tpr_train[:-1] = tprs_train[:-1] / 5
     avg_auc_train = auc(base_fpr, mean_tprs)
-
-    # plot_roc_curve(base_fpr, mean_tprs, avg_auc_train)
 
     pp_option.append((i, sum(scores) / len(scores)))
 
@@ -181,6 +173,48 @@ print(pp_option)
 print(train_pp_option)
 
 max_pp_index = sorted(pp_option, key=lambda x: x[1], reverse=True)[0][0]
+
+
+classifiers = [knn, logistic_regression, svm, ann]
+df = data_sets[2]  # chosen best set - no feature selection with OH, Distribution imputer, 0.98 PCA
+auc_plot = AUC()
+for i, clf in enumerate(classifiers):
+    clf_name = clf.__class__.__name__
+    kf = KFold(n_splits=5, random_state=None, shuffle=True)
+    tprs_test = np.linspace(0, 0, 100)
+    tprs_train = np.linspace(0, 0, 100)
+    # Initialize the mean TPR
+    mean_tpr = 0.0
+    # Creates an array of 100 numbers between 0 and 1 in equal jumps
+    mean_fpr = np.linspace(0, 1, 100)
+    tprs = []
+    fpr_tprs = []
+    base_fpr = np.linspace(0, 1, 101)
+    for train_index, validate_index in kf.split(df):
+        train = df.iloc[train_index]  # get rows by index list, drop label column
+        validate = df.iloc[validate_index]
+        train_label = np.array(labels.iloc[train_index])
+        validate_label = np.array(labels.iloc[validate_index])
+
+        clf.fit(train, train_label)
+        predictions = clf.predict_proba(validate)
+        train_predictions = clf.predict_proba(train)
+        predicted_labels = clf.predict(validate)
+
+        fpr, tpr, threshold = roc_curve(validate_label, predictions[:, 1])
+        fpr_train, tpr_train, thresholds_train = roc_curve(train_label, train_predictions[:, 1])
+
+        fpr_tprs.append((fpr, tpr))
+        #plt.plot(fpr, tpr, color="gray")
+        tpr = np.interp(base_fpr, fpr, tpr)
+        tpr[0] = 0.0
+        tprs.append(tpr)
+
+    tprs = np.array(tprs)
+    mean_tprs = tprs.mean(axis=0)
+    avg_auc_train = auc(base_fpr, mean_tprs)
+    auc_plot.plot_auc(clf_name, fpr_tprs, base_fpr, mean_tprs,  avg_auc_train, i)
+plt.show()
 
 # gs = GridSearchCV(ann_best, ANN_parametersOptions, cv=3, scoring='roc_auc')
 # gs.fit(data_sets[max_pp_index].copy(), labels.copy())

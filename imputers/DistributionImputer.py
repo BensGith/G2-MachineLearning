@@ -6,8 +6,9 @@ import pandas as pd
 class DistributionImputer:
     def __init__(self):
         self.distributions = []  # holds a tuple of distribution name with most likely fitted parameters
+        self.max_values = []
+        self.min_values = []
         self.distribution_names = [st.chi2, st.f, st.norm, st.expon]
-        self.numeric_cols = []
         self.function_map = {"chi2": np.random.chisquare,
                              "norm": np.random.normal,
                              "expon": np.random.exponential,
@@ -21,6 +22,8 @@ class DistributionImputer:
         """
 
         for feature in data[:-1].columns:
+            self.max_values.append(max(data[feature]))
+            self.min_values.append(min(data[feature]))
             best_distribution = st.norm
             best_params = (0.0, 1.0)
             best_sse = np.inf
@@ -54,11 +57,16 @@ class DistributionImputer:
         :return:
         """
         for i, feature in enumerate(data.columns):
-            if feature in set(([str(i) for i in range(21)])):
+            if feature in set(([str(i) for i in range(21)])):  # work on the original columns
                 for j, cell in enumerate(data[feature]):
                     if pd.isnull(cell):
                         # call random function from dictionary, pass parameters from fit
-                        data[feature].iloc[j] = self.function_map[self.distributions[i][0]](*self.distributions[i][1])
+                        random_impute = self.function_map[self.distributions[i][0]](*self.distributions[i][1])
+                        if random_impute > self.max_values[i]:
+                            random_impute = self.max_values[i]
+                        elif random_impute < self.min_values[i]:
+                            random_impute = self.min_values[i]
+                        data[feature].iloc[j] = random_impute
 
         return data
 
