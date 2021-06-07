@@ -1,6 +1,7 @@
 import scipy.stats as st
 import numpy as np
 import pandas as pd
+import warnings
 
 
 class DistributionImputer:
@@ -20,36 +21,39 @@ class DistributionImputer:
         :param data:
         :return:
         """
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
 
-        for feature in data[:-1].columns:
-            self.max_values.append(max(data[feature]))
-            self.min_values.append(min(data[feature]))
-            best_distribution = st.norm
-            best_params = (0.0, 1.0)
-            best_sse = np.inf
-            if feature in set(([str(i) for i in range(21)])):
-                data_no_nan = pd.Series(list(filter(lambda z: not pd.isnull(z), data[feature])))
-                y, x = np.histogram(data_no_nan, bins=200, density=True)
-                x = (x + np.roll(x, -1))[:-1] / 2.0
-                for distribution in self.distribution_names:
-                    params = distribution.fit(data_no_nan)
-                    arg = params[:-2]
-                    loc = params[-2]
-                    scale = params[-1]
-                    pdf = distribution.pdf(x, loc=loc, scale=scale, *arg)  # probability density function
-                    sse = np.sum(np.power(y - pdf, 2.0))
-                    if best_sse > sse > 0:  # if the sse we found is smaller than previous best one, set it as best
-                        best_distribution = distribution
-                        if best_distribution.name =="norm":
-                            best_params = params
-                        elif best_distribution.name =="expon":
-                            best_params = [params[1]]
-                        else:
-                            best_params = arg
-                        best_sse = sse
-                print(
-                    f'Best fitted distribution for {feature} is {best_distribution.name}. Fitted params {best_params}')
-                self.distributions.append((best_distribution.name, best_params))
+            for feature in data[:-1].columns:
+                self.max_values.append(max(data[feature]))
+                self.min_values.append(min(data[feature]))
+                best_distribution = st.norm
+                best_params = (0.0, 1.0)
+                best_sse = np.inf
+                if feature in set(([str(i) for i in range(21)])):
+                    data_no_nan = pd.Series(list(filter(lambda z: not pd.isnull(z), data[feature])))
+                    y, x = np.histogram(data_no_nan, bins=200, density=True)
+                    x = (x + np.roll(x, -1))[:-1] / 2.0
+                    for distribution in self.distribution_names:
+                        params = distribution.fit(data_no_nan)
+                        arg = params[:-2]
+                        loc = params[-2]
+                        scale = params[-1]
+                        pdf = distribution.pdf(x, loc=loc, scale=scale, *arg)  # probability density function
+                        sse = np.sum(np.power(y - pdf, 2.0))
+                        if best_sse > sse > 0:  # if the sse we found is smaller than previous best one, set it as best
+                            best_distribution = distribution
+                            if best_distribution.name == "norm":
+                                best_params = params
+                            elif best_distribution.name == "expon":
+                                best_params = [params[1]]
+                            else:
+                                best_params = arg
+                            best_sse = sse
+                    print(
+                        f'Best fitted distribution for {feature} is {best_distribution.name}.'
+                        f' Fitted params {best_params}')
+                    self.distributions.append((best_distribution.name, best_params))
 
     def transform(self, data):
         """
@@ -66,7 +70,7 @@ class DistributionImputer:
                             random_impute = self.max_values[i]
                         elif random_impute < self.min_values[i]:
                             random_impute = self.min_values[i]
-                        data[feature].iloc[j] = random_impute
+                        data.iat[j, data.columns.get_loc(feature)] = random_impute
 
         return data
 

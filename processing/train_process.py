@@ -38,7 +38,7 @@ def main():
     df = basic_process(df, train=True)
     final_data = []
     scalers = []  # holds the list of scalers
-    data_sets = [one_hot_encode(df), one_hot_encode(process_feature_selection(df))]
+    data_sets = [one_hot_encode(df.copy()), one_hot_encode(process_feature_selection(df.copy()))]
     labels = data_sets[0]['label']
     imputers = [DistributionImputer(), SimpleImputer(strategy='median')]
     imputed_sets = []
@@ -95,12 +95,13 @@ knn = KNeighborsClassifier(3)
 # svm = SVC(C=0.01, kernel='rbf', probability=True)
 
 data_sets, labels = main()
-#print(data_sets[2].isnull().values.any())
+print([d.isnull().values.any() for d in data_sets])
+
 kf = KFold(n_splits=5, random_state=None, shuffle=True)
 pp_option = []
 train_pp_option = []
 
-for i, df in enumerate([data_sets[2]]):
+for i, df in enumerate(data_sets):
     scores = []
     train_scores = []
     # the X axis (average fpr)
@@ -149,7 +150,7 @@ for i, df in enumerate([data_sets[2]]):
         fpr, tpr, threshold = roc_curve(validate_label, predictions[:, 1])
         fpr_train, tpr_train, thresholds_train = roc_curve(train_label, train_predictions[:,1])
 
-        #plt.plot(fpr, tpr, color="gray")
+
         tpr = np.interp(base_fpr, fpr, tpr)
         tpr[0] = 0.0
         tprs.append(tpr)
@@ -205,7 +206,6 @@ for i, clf in enumerate(classifiers):
         fpr_train, tpr_train, thresholds_train = roc_curve(train_label, train_predictions[:, 1])
 
         fpr_tprs.append((fpr, tpr))
-        #plt.plot(fpr, tpr, color="gray")
         tpr = np.interp(base_fpr, fpr, tpr)
         tpr[0] = 0.0
         tprs.append(tpr)
