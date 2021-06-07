@@ -10,7 +10,6 @@ import matplotlib.patches as mpatches
 import numpy as np
 from imputers.DistributionImputer import DistributionImputer
 from imputers.choice import ChoiceImputer
-from imputers.RegressionImputer import RegressionImputer
 from outliers.remove_outlier_stddev import remove_outlier_stddev
 from graphs.ConfusionMatrix import ConfusionMatrix
 from sklearn.metrics import roc_curve
