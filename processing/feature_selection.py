@@ -4,5 +4,5 @@ def process_feature_selection(data):
     data['18'] = data['18'].apply(
         lambda x: int(x[1:]) if type(x) == str else x)  # drop the leading "a" in column, cast as int
 
-    data = data.drop(columns=['0', '15', '17'], axis=1)
+    data = data.drop(columns=['5'], axis=1)
     return data
