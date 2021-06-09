@@ -27,13 +27,13 @@ from sklearn.metrics import log_loss
 from processing.basic_process import basic_process
 from classifiers.ANN import ann
 from classifiers.SVM import svm
+from processing.OneHotEncoder import OneHotEncoder
 
-
-def one_hot_encode(data):
-    l_col = data['label']
-    data = data.drop(columns=['label'], axis=1)
-    data = pd.get_dummies(data)
-    return pd.concat([data, l_col], axis=1)
+# def one_hot_encode(data):
+#     l_col = data['label']
+#     data = data.drop(columns=['label'], axis=1)
+#     data = pd.get_dummies(data)
+#     return pd.concat([data, l_col], axis=1)
 
 
 def main():
@@ -42,7 +42,10 @@ def main():
     df = basic_process(df, train=True)
     final_data = []
     scalers = []  # holds the list of scalers
-    data_sets = [one_hot_encode(df.copy()), one_hot_encode(process_feature_selection(df.copy()))]
+    encoder1 = OneHotEncoder()
+    encoder2 = OneHotEncoder()
+    # data_sets = [one_hot_encode(df.copy()), one_hot_encode(process_feature_selection(df.copy()))]
+    data_sets = [encoder1.fit_transform(df.copy()), encoder2.fit_transform(process_feature_selection(df.copy()))]
     labels = data_sets[0]['label']
     imputers = [DistributionImputer(), SimpleImputer(strategy='median')]
     imputed_sets = []

@@ -1,5 +1,5 @@
 venv
-*.ipynb
+
 *.ps1
 *.pyc
 **/__pycache__/
