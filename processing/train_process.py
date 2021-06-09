@@ -4,9 +4,7 @@ from sklearn.metrics import auc
 from sklearn.model_selection import KFold
 import matplotlib.pyplot as plt
 from graphs.AUC import AUC
-#from graphs.AUC import plot_roc_curve
-
-import matplotlib.patches as mpatches
+from processing.test_process import write_csv, predict_test
 import numpy as np
 from imputers.DistributionImputer import DistributionImputer
 from outliers.remove_outlier_stddev import remove_outlier_stddev
@@ -110,10 +108,7 @@ LR_parametersOptions = {'penalty': ['l2'],
                         'max_iter': [150, 350, 1500]}  # max itertion for the algoritem
 
 SVM_parameters = {'C': [0.001, 0.01, 0.1, 0.5, 1., 10., 100.],
-                  'max_iter': [150, 350, 1500],
                   'degree':[1, 3, 5, 7],
-                  'gamma': [1, 0.75, 0.5, 0.25, 0.1, 0.01, 0.001],
-
                   'kernel': ['poly', 'rbf', 'sigmoid'],
                   'probability': [True]}
 
@@ -261,6 +256,33 @@ for i, clf in enumerate(classifiers):
     avg_auc_train = auc(base_fpr, mean_tprs)
     auc_plot.plot_auc(clf_name, fpr_tprs, base_fpr, mean_tprs,  avg_auc_train, i)
 plt.show()
+
+###### Test ###########
+# Process the training set
+train_df = pd.read_csv('train.csv')
+
+labels = train_df['label']
+train_df = basic_process(train_df)
+train_df.drop(columns=['label'], axis=1, inplace=True)
+
+encoder = OneHotEncoder()
+imupter = IterativeImputer()
+scaler = MinMaxScaler()
+pca = PCA(0.98, svd_solver='full')
+stages = [encoder, imupter, scaler, pca]
+for stage in stages:
+    train_df = stage.fit_transform(train_df)
+ann.fit(train_df, labels)
+
+test_df = pd.read_csv('../test_without_target.csv')
+predicted = ann.predict()
+predictions = clf.predict_proba(validate)
+train_predictions = clf.predict_proba(train)
+predicted_labels = clf.predict(validate)
+
+
+
+
 
 # gs = GridSearchCV(ann, ANN_parametersOptions, cv=3, scoring='roc_auc')
 # gs.fit(data_sets[max_pp_index].copy(), labels.copy())
