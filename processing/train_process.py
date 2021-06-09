@@ -50,7 +50,7 @@ def main():
     #imputers = [DistributionImputer(), SimpleImputer(strategy='median'),ChoiceImputer()]
     imputed_sets = []
     pca_data = []
-    explained_var = [0.9, 0.95, 0.98]
+    explained_var = [0.9,0.95, 0.98]
     for data_set in data_sets:
         for imputer in imputers:
             feature_names = list(data_set.columns.values)  # save column names
@@ -72,12 +72,12 @@ def main():
 
 ANN_parametersOptions = {'activation': ["relu", "logistic"],  #
                          'hidden_layer_sizes': [(100,)],  # multiple small sized layers
-                         'batch_size': [20, 30],
-                         'learning_rate_init': [0.01],
-                         'alpha':[0.01,0.02],
-                         'tol':[0.00009],
-                        'epsilon':[0.0000000009,0.0000000001],
-                         'beta_1':[0.8,0.85],
+                         'batch_size': [30],
+                         'tol':[1e-4],
+                         'learning_rate_init': [0.001,0.002],
+                         'beta_2':[0.999,0.995],
+                         'alpha':[0.0001,0.03],
+                         'beta_1':[0.9,0.88],
                          'solver':['adam']}
 
 
@@ -184,7 +184,7 @@ max_pp_index = sorted(pp_option, key=lambda x: x[1], reverse=True)[0][0]
 
 classifiers = [ann]
 # classifiers = [ann,knn, logistic_regression, svm]
-df = data_sets[2]  # chosen best set - no feature selection with OH, Distribution imputer, 0.98 PCA
+df = data_sets[1]  # chosen best set - no feature selection with OH, Distribution imputer, 0.98 PCA
 auc_plot = AUC()
 for i, clf in enumerate(classifiers):
     clf_name = clf.__class__.__name__
@@ -230,7 +230,7 @@ for i, clf in enumerate(classifiers):
 plt.show()
 
 # gs = GridSearchCV(ann, ANN_parametersOptions, cv=3, scoring='roc_auc')
-# gs.fit(data_sets[2].copy(), labels.copy())
+# gs.fit(data_sets[1].copy(), labels.copy())
 # print(gs.best_params_)
 # lr_gs = GridSearchCV(LogisticRegression(), LR_parametersOptions, cv=3, scoring='roc_auc')
 # lr_gs.fit(data_sets[max_pp_index].copy(),labels.copy())
