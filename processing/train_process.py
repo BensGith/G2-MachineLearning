@@ -72,12 +72,10 @@ def main():
 
 ANN_parametersOptions = {'activation': ["relu", "logistic"],  #
                          'hidden_layer_sizes': [(100,)],  # multiple small sized layers
-                         'batch_size': [30],
-                         'tol':[1e-4],
-                         'learning_rate_init': [0.001,0.002],
-                         'beta_2':[0.999,0.995],
-                         'alpha':[0.0001,0.03],
-                         'beta_1':[0.9,0.88],
+                         'batch_size': [40,35],
+                         'learning_rate_init': [0.0015,0.002],
+                         'beta_1':[0.87,0.88],
+                         'epsilon':[1e-8,1e-10],
                          'solver':['adam']}
 
 
