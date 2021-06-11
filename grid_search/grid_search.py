@@ -15,12 +15,12 @@ class Grid:
 
         ann_params = {
             'activation': ["relu", "logistic"],
-            "solver": "sgd",
+            "solver": ["sgd"],
             'hidden_layer_sizes': [(100,), (50, 50), (20, 20, 10, 10, 10)],
             'batch_size': [10, 50, 100, 200],
             'learning_rate_init': [0.01, 0.001],
-            'alpha': [0.01, 0.1, 1],
-            'max_iter': [350, 500 ,1500]}
+            'alpha': [0.01, 0.1],
+            'max_iter': [1500]}
 
         lr_params = {
             'penalty': ['l2'],

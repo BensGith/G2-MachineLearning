@@ -63,9 +63,9 @@ def main():
     return final_data, labels
 
 
-data_sets, labels = main()
+# data_sets, labels = main()
 
-print([d.isnull().values.any() for d in data_sets])
+# print([d.isnull().values.any() for d in data_sets])
 
 # kf = KFold(n_splits=5, random_state=None, shuffle=True)
 # pp_option = []
