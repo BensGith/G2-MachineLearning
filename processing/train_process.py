@@ -182,7 +182,7 @@ max_pp_index = sorted(pp_option, key=lambda x: x[1], reverse=True)[0][0]
 
 classifiers = [ann]
 # classifiers = [ann,knn, logistic_regression, svm]
-df = data_sets[1]  # chosen best set - no feature selection with OH, Distribution imputer, 0.98 PCA
+df = data_sets[2]  # chosen best set - no feature selection with OH, Distribution imputer, 0.98 PCA
 auc_plot = AUC()
 for i, clf in enumerate(classifiers):
     clf_name = clf.__class__.__name__
