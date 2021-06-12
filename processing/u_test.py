@@ -11,6 +11,7 @@ from outliers.remove_outlier_stddev import remove_outlier_stddev
 from graphs.ConfusionMatrix import ConfusionMatrix
 from sklearn.metrics import roc_curve
 import time
+from imputers.ChoiceImputer import ChoiceImputer
 import copy
 from helper.feature_classfier import classify_features
 from sklearn.experimental import enable_iterative_imputer
@@ -28,7 +29,7 @@ from classifiers.ANN import ann
 from classifiers.SVM import svm
 from classifiers.LogisticRegression import logistic_regression
 from processing.OneHotEncoder import OneHotEncoder
-
+from scalers.CustomMinMax import CustomMinMax
 
 
 start_time = time.time()
@@ -43,10 +44,11 @@ for train_index, validate_index in kf.split(df):
     validate_df = pd.DataFrame.reset_index(df.iloc[validate_index].drop(columns=['label'], axis=1), drop=True)
     validate_labels = df.iloc[validate_index]['label']
     encoder = OneHotEncoder()
-    imputer = IterativeImputer()
-    scaler = MinMaxScaler()
+    imputer = ChoiceImputer()
+    #scaler = MinMaxScaler()
+    scaler = CustomMinMax()
     pca = PCA(0.98, svd_solver='full')
-    train_df.drop(columns=['label'], axis=1,inplace=True)
+    train_df.drop(columns=['label'], axis=1, inplace=True)
     train_df = encoder.fit_transform(train_df)
     feature_names = list(train_df.columns.values)  # save column names
     train_df = pd.DataFrame(imputer.fit_transform(train_df))  # impute data
@@ -63,7 +65,7 @@ for train_index, validate_index in kf.split(df):
     validate_df = basic_process(validate_df)
     validate_df = encoder.transform(validate_df)
     validate_df = imputer.transform(validate_df)
-    validate_df = scaler.transform(validate_df)
+    validate_df = scaler.transform(pd.DataFrame(validate_df))
     validate_df = pca.transform(validate_df)
     validate_df = pd.DataFrame(validate_df)
 
