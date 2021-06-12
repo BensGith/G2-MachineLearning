@@ -20,7 +20,8 @@ class OneHotEncoder:
         missing_cols_test = self.columns - cols  # find columns that are fit has and missing
         extra_cols_test = cols - self.columns  # find columns that fit doesn't have
         for col in missing_cols_test:
-            data[col] = 0  # if the column is missing, add it with 0s
+            if col != 'label':
+                data[col] = 0  # if the column is missing and is not label, add it with 0s
         for col in extra_cols_test:
             data.drop(col, axis=1, inplace=True)  # if a col doesn't exist in self.columns, drop it
 

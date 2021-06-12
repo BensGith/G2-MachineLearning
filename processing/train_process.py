@@ -40,7 +40,7 @@ def main():
     encoder2 = OneHotEncoder()
     # data_sets = [one_hot_encode(df.copy()), one_hot_encode(process_feature_selection(df.copy()))]
     data_sets = [encoder1.fit_transform(df.copy()), encoder2.fit_transform(process_feature_selection(df.copy()))]
-    imputers = [DistributionImputer(), SimpleImputer(strategy='median')]
+    imputers = [IterativeImputer()]
     imputed_sets = []
     pca_data = []
     explained_var = [0.9, 0.95, 0.98]
@@ -63,10 +63,14 @@ def main():
     return final_data, labels
 
 
-# data_sets, labels = main()
+#data_sets, labels = main()
+
+
+
+
 
 # print([d.isnull().values.any() for d in data_sets])
-
+# print(train_df.isnull().values.any())
 # kf = KFold(n_splits=5, random_state=None, shuffle=True)
 # pp_option = []
 # train_pp_option = []
@@ -147,25 +151,35 @@ def main():
 #     train_pp_option.append((i, sum(train_scores) / len(train_scores)))
 # print(pp_option)
 # print(train_pp_option)
-#
-# max_pp_index = sorted(pp_option, key=lambda x: x[1], reverse=True)[0][0]
 
+# max_pp_index = sorted(pp_option, key=lambda x: x[1], reverse=True)[0][0]
+#
 start_time = time.time()
 # best df
 train_df = pd.read_csv('train.csv')
 train_df = basic_process(train_df, train=True)
 labels = train_df['label']
-train_df.drop(columns=['label'], axis=1, inplace=True)
 encoder = OneHotEncoder()
-imupter = IterativeImputer()
+imputer = IterativeImputer()
 scaler = MinMaxScaler()
 pca = PCA(0.98, svd_solver='full')
-stages = [encoder, imupter, scaler, pca]
-for stage in stages:
-    train_df = stage.fit_transform(train_df)
+
+train_df = encoder.fit_transform(train_df)
+feature_names = list(train_df.columns.values) # save column names
+train_df = pd.DataFrame(imputer.fit_transform(train_df))  # impute data
+train_df = train_df.set_axis(feature_names, axis=1, inplace=False)  # rename columns after imputing
+
+train_df = pd.DataFrame(scaler.fit_transform(train_df), index=train_df.index,
+                        columns=train_df.columns)  # scale data
+
+train_df = pca.fit_transform(train_df.drop(columns=['label'], axis=1))
+
+# print(f'labels are equal {labe.equals(labels)}')
+# print(f'DFs are equal {train_df.equals(data_sets[2])}')
+
 
 classifiers = [ann, knn, logistic_regression, svm]
-# df = data_sets[2]  # chosen best set - no feature selection with OH, Distribution imputer, 0.98 PCA
+#df = data_sets[2]  # chosen best set - no feature selection with OH, Distribution imputer, 0.98 PCA
 df = pd.DataFrame(train_df)
 auc_plot = AUC()
 for i, clf in enumerate(classifiers):
