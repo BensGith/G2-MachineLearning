@@ -184,7 +184,7 @@ train_df = pca.fit_transform(train_df)
 classifiers = [ann, knn, logistic_regression, svm]
 #df = data_sets[2]  # chosen best set - no feature selection with OH, Distribution imputer, 0.98 PCA
 df = pd.DataFrame(train_df)
-auc_plot = AUC()
+#auc_plot = AUC()
 for i, clf in enumerate(classifiers):
     clf_name = clf.__class__.__name__
     kf = KFold(n_splits=5, random_state=None, shuffle=True)
@@ -209,7 +209,8 @@ for i, clf in enumerate(classifiers):
         predicted_labels = clf.predict(validate)
 
         train_predicted_labels = clf.predict(train)
-
+        confusion_mat = ConfusionMatrix(clf.__class__.__name__, validate_label, predicted_labels)
+        confusion_mat.plot()
         # score_validate = log_loss(validate_label, predictions)
         # score_train = log_loss(train_label, train_predictions)
         score_validate = accuracy_score(validate_label, predicted_labels)
@@ -228,6 +229,6 @@ for i, clf in enumerate(classifiers):
     tprs = np.array(tprs)
     mean_tprs = tprs.mean(axis=0)
     avg_auc_train = auc(base_fpr, mean_tprs)
-    auc_plot.plot_auc(clf_name, fpr_tprs, base_fpr, mean_tprs, avg_auc_train, i)
+    #auc_plot.plot_auc(clf_name, fpr_tprs, base_fpr, mean_tprs, avg_auc_train, i)
 plt.show()
 print(time.time() - start_time)

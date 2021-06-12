@@ -44,7 +44,8 @@ for train_index, validate_index in kf.split(df):
     validate_df = pd.DataFrame.reset_index(df.iloc[validate_index].drop(columns=['label'], axis=1), drop=True)
     validate_labels = df.iloc[validate_index]['label']
     encoder = OneHotEncoder()
-    imputer = IterativeImputer(random_state=0)
+    #imputer = IterativeImputer(random_state=0)
+    imputer = SimpleImputer(strategy='median')
     #imputer = ChoiceImputer()
     #scaler = MinMaxScaler()
     scaler = CustomMinMax()
