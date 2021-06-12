@@ -44,13 +44,15 @@ for train_index, validate_index in kf.split(df):
     validate_df = pd.DataFrame.reset_index(df.iloc[validate_index].drop(columns=['label'], axis=1), drop=True)
     validate_labels = df.iloc[validate_index]['label']
     encoder = OneHotEncoder()
-    imputer = IterativeImputer()
-    scaler = MinMaxScaler()
-    #scaler = CustomMinMax()
-    pca = PCA(0.98, svd_solver='full')
+    imputer = IterativeImputer(random_state=0)
+    #imputer = ChoiceImputer()
+    #scaler = MinMaxScaler()
+    scaler = CustomMinMax()
+    pca = PCA(0.95, svd_solver='full')
     train_df.drop(columns=['label'], axis=1, inplace=True)
     train_df = encoder.fit_transform(train_df)
     feature_names = list(train_df.columns.values)  # save column names
+    print(all([1 in train_df[col] for col in train_df.columns if col[:-1] =='d']))
     train_df = pd.DataFrame(imputer.fit_transform(train_df))  # impute data
     train_df = train_df.set_axis(feature_names, axis=1, inplace=False)  # rename columns after imputing
 
@@ -68,7 +70,7 @@ for train_index, validate_index in kf.split(df):
     validate_df = pd.DataFrame(imputer.transform(validate_df))
     validate_df = validate_df.set_axis(feature_names, axis=1, inplace=False)  # rename columns after imputing
 
-    validate_df = pd.DataFrame(scaler.fit_transform(validate_df), index=validate_df.index,
+    validate_df = pd.DataFrame(scaler.transform(validate_df), index=validate_df.index,
                             columns=validate_df.columns)  # scale data
     validate_df = scaler.transform(pd.DataFrame(validate_df))
     validate_df = pca.transform(validate_df)

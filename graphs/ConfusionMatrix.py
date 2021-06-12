@@ -22,6 +22,4 @@ class ConfusionMatrix:
         self.ax.xaxis.set_ticks_position('top')
         self.ax.xaxis.set_label_position('top')
         plt.show()
-        weighted_acu = (self.tn + self.tp) / (self.tn + self.tp + self.fp + 5 * self.fn)
-        print(f"The weighted accuracy for {self.clf_name} is {weighted_acu}")
-        return weighted_acu
+
