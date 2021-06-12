@@ -35,7 +35,7 @@ from scalers.CustomMinMax import CustomMinMax
 start_time = time.time()
 
 df = pd.read_csv('train.csv')
-kf = KFold(n_splits=5, random_state=None, shuffle=True)
+kf = KFold(n_splits=10, random_state=None, shuffle=True)
 for train_index, validate_index in kf.split(df):
     train_df = pd.DataFrame.reset_index(df.iloc[train_index], drop=True)
     train_df = basic_process(train_df, train=True)
@@ -44,9 +44,9 @@ for train_index, validate_index in kf.split(df):
     validate_df = pd.DataFrame.reset_index(df.iloc[validate_index].drop(columns=['label'], axis=1), drop=True)
     validate_labels = df.iloc[validate_index]['label']
     encoder = OneHotEncoder()
-    imputer = ChoiceImputer()
-    #scaler = MinMaxScaler()
-    scaler = CustomMinMax()
+    imputer = IterativeImputer()
+    scaler = MinMaxScaler()
+    #scaler = CustomMinMax()
     pca = PCA(0.98, svd_solver='full')
     train_df.drop(columns=['label'], axis=1, inplace=True)
     train_df = encoder.fit_transform(train_df)
@@ -64,7 +64,12 @@ for train_index, validate_index in kf.split(df):
 
     validate_df = basic_process(validate_df)
     validate_df = encoder.transform(validate_df)
-    validate_df = imputer.transform(validate_df)
+    feature_names = list(validate_df.columns.values)  # save column names
+    validate_df = pd.DataFrame(imputer.transform(validate_df))
+    validate_df = validate_df.set_axis(feature_names, axis=1, inplace=False)  # rename columns after imputing
+
+    validate_df = pd.DataFrame(scaler.fit_transform(validate_df), index=validate_df.index,
+                            columns=validate_df.columns)  # scale data
     validate_df = scaler.transform(pd.DataFrame(validate_df))
     validate_df = pca.transform(validate_df)
     validate_df = pd.DataFrame(validate_df)

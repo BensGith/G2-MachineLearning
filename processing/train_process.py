@@ -27,7 +27,7 @@ from classifiers.ANN import ann
 from classifiers.SVM import svm
 from classifiers.LogisticRegression import logistic_regression
 from processing.OneHotEncoder import OneHotEncoder
-
+from scalers.CustomMinMax import CustomMinMax
 
 def main():
     # decide what's the best way to process the data
@@ -154,25 +154,28 @@ def main():
 
 # max_pp_index = sorted(pp_option, key=lambda x: x[1], reverse=True)[0][0]
 #
+
 start_time = time.time()
 # best df
 train_df = pd.read_csv('train.csv')
 train_df = basic_process(train_df, train=True)
 labels = train_df['label']
+train_df.drop(columns=['label'], axis=1, inplace=True )
 encoder = OneHotEncoder()
-imputer = IterativeImputer()
+imputer = SimpleImputer()
+#scaler = CustomMinMax()
 scaler = MinMaxScaler()
 pca = PCA(0.98, svd_solver='full')
 
 train_df = encoder.fit_transform(train_df)
-feature_names = list(train_df.columns.values) # save column names
+feature_names = list(train_df.columns.values)  # save column names
 train_df = pd.DataFrame(imputer.fit_transform(train_df))  # impute data
 train_df = train_df.set_axis(feature_names, axis=1, inplace=False)  # rename columns after imputing
 
 train_df = pd.DataFrame(scaler.fit_transform(train_df), index=train_df.index,
                         columns=train_df.columns)  # scale data
 
-train_df = pca.fit_transform(train_df.drop(columns=['label'], axis=1))
+train_df = pca.fit_transform(train_df)
 
 # print(f'labels are equal {labe.equals(labels)}')
 # print(f'DFs are equal {train_df.equals(data_sets[2])}')
