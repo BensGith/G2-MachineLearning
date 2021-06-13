@@ -3,7 +3,7 @@ from outliers.remove_outlier_stddev import remove_outlier_stddev
 
 
 def basic_process(data, train=False):
-    data.drop(columns=['19'], axis=1, inplace=True)
+    data.drop(columns=['0', '19', '15'], axis=1, inplace=True)
     feature_classes = classify_features(data)
     numeric_features = feature_classes.get("numerical")
     if train:

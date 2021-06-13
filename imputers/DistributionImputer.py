@@ -50,9 +50,9 @@ class DistributionImputer:
                             else:
                                 best_params = arg
                             best_sse = sse
-                    print(
-                        f'Best fitted distribution for {feature} is {best_distribution.name}.'
-                        f' Fitted params {best_params}')
+                    # print(
+                    #     f'Best fitted distribution for {feature} is {best_distribution.name}.'
+                    #     f' Fitted params {best_params}')
                     self.distributions.append((best_distribution.name, best_params))
 
     def transform(self, data):

@@ -33,7 +33,7 @@ class Grid:
             'kernel': ['poly', 'rbf', 'sigmoid'],
             'probability': [True]}
 
-        knn_params = {"n_neighbors": [3, 15, 25, 75, 100]}
+        knn_params = {"n_neighbors": [x for x in range(31, 202, 10)]}
         # classifiers = [ann, svm, logistic_regression, knn]
         # params = [ann_params, svm_parameters, lr_params, knn_params]
         classifiers = [ann]

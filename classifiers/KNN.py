@@ -1,5 +1,5 @@
 from sklearn.neighbors import KNeighborsClassifier
-knn = KNeighborsClassifier(100)
+knn = KNeighborsClassifier(131)
 
 
 
