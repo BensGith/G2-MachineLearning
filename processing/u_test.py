@@ -73,7 +73,7 @@ for train_index, validate_index in kf.split(df):
 
     validate_df = pd.DataFrame(scaler.transform(validate_df), index=validate_df.index,
                             columns=validate_df.columns)  # scale data
-    validate_df = scaler.transform(pd.DataFrame(validate_df))
+
     validate_df = pca.transform(validate_df)
     validate_df = pd.DataFrame(validate_df)
 
