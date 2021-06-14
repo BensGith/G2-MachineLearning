@@ -9,8 +9,8 @@ class OneHotEncoder:
         return str(self.columns)
 
     def fit(self, data):
-        data = pd.get_dummies(data)
-        for col in data.columns:
+        data = pd.get_dummies(data)  # transform categorical features into binary ones
+        for col in data.columns:  # save columns
             self.columns.add(col)
 
     def transform(self, data):

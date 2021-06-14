@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np
 
+
 class ConfusionMatrix:
     def __init__(self, clf_name, true_labels, predicted_labels):
         self.clf_name = clf_name
@@ -14,6 +15,7 @@ class ConfusionMatrix:
     def plot(self):
         group_names = ['TN', 'FP', 'FN', 'TP']
         rates = self.normalized_cm.reshape(1, 4)[0]
+        # create a single tuple for each group name with it's matching rate
         labels = ['{}\n{:.2f}'.format(group[0], group[1]) for group in zip(group_names, rates)]
         labels = np.asarray(labels).reshape(2, 2)
         sns.heatmap(self.normalized_cm, annot=labels, fmt='', cmap="Blues", linewidths=3)
