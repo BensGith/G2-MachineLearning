@@ -14,7 +14,7 @@ ann = MLPClassifier(  # -----The architecture:------#
     tol=1e-4,
     batch_size=10,  # The number of samples each batch.
     max_iter=500,   # The total number of epochs.
-    beta_1=0.8, #
+    beta_1=0.8, # Parametar for adam solver
     warm_start=False,  # if we fit at the second time, do we start from the last fit?
     random_state=42  # seed
 
